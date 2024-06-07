@@ -1,9 +1,12 @@
-import { GraphQLString } from "graphql";
+import { GraphQLList, GraphQLSchema, GraphQLString } from "graphql";
+import models from "../models/index.js";
 
 const hello = {
-    type: GraphQLString,
+    type: GraphQLList,
     description: 'This return a string',
-    resolve: () => 'world'
+    resolve: async () => {
+        return await models.userSchema.find();
+    }
 }
 
 export default {

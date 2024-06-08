@@ -75,6 +75,7 @@ const createPost = {
         body: { type: GraphQLString},
     }, 
     resolve: async (_, args, {verifiedUser}) => {
+        if(!verifiedUser) throw new Error('User not authenticated');
         const { title, body } = args;
         const newPost = new models.post({
             title, 
@@ -137,10 +138,33 @@ const deletePost = {
 
 }
 
+const createComment = {
+    type: typeDef.commentType,
+    description: 'Create a new comment',
+    args: {
+        postID: { type: GraphQLString},
+        comment: { type: GraphQLString},
+    },
+    resolve: async (_, { postID, comment }, {verifiedUser}) => {
+        if(!verifiedUser) throw new Error('User not authenticated');
+
+        const newComment = new models.comment({
+            postID,
+            comment,
+            authorID: verifiedUser._id
+        });
+
+        newComment.save();
+
+        return newComment;
+    }
+}
+
 export default {
     createUser,
     login,
     createPost,
     updatePost,
-    deletePost
+    deletePost,
+    createComment
 }

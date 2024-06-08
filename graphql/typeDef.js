@@ -1,4 +1,4 @@
-import { GraphQLObjectType, GraphQLString, GraphQLID } from "graphql"; 
+import { GraphQLObjectType, GraphQLString, GraphQLID, GraphQLList } from "graphql"; 
 import models from "../models/index.js";
 
 const userType = new GraphQLObjectType({
@@ -18,10 +18,39 @@ const userType = new GraphQLObjectType({
 const postType = new GraphQLObjectType({
     name: 'Post',
     description: 'This represent a data type of the post',
-    fields: {
+    fields: () =>({
         id: { type: GraphQLID },
         title: { type: GraphQLString },
         body: { type: GraphQLString },
+        authorID: { 
+            type: userType,
+            resolve: async (parent)=>{
+                return await models.user.findById(parent.authorID);
+            }  
+        },
+        createdAt: { type: GraphQLString },
+        updatedAt: { type: GraphQLString },
+        comments: {
+            type: new GraphQLList(commentType),
+            resolve: async (parent)=>{
+                return await models.comment.find({postID: parent.id});
+            }
+        }
+    })
+})
+
+const commentType = new GraphQLObjectType({
+    name: 'Comment',
+    description: 'This represent a data type of the comment',
+    fields: {
+        id: { type: GraphQLID },
+        comment: { type: GraphQLString },
+        postID: { 
+            type: postType,
+            resolve: async (parent)=>{
+                return await models.post.findById(parent.postID);
+            }  
+        },
         authorID: { 
             type: userType,
             resolve: async (parent)=>{
@@ -33,5 +62,6 @@ const postType = new GraphQLObjectType({
 
 export default {
     userType,
-    postType
+    postType,
+    commentType
 };

@@ -1,6 +1,6 @@
 import { GraphQLObjectType, GraphQLSchema } from "graphql";
 import querys from './querys.js';
-import mutation from './mutation.js';
+import mutation from './mutation.js';;
 
 const QueryType = new GraphQLObjectType({
     name: 'Query',
@@ -9,7 +9,7 @@ const QueryType = new GraphQLObjectType({
         getUsers: querys.findUsers,
         getUserById: querys.findUserById,
         getPosts: querys.findPosts,
-        getPostById: querys.findPostById
+        getPostById: querys.findPostById,
     }
 });
 
@@ -21,8 +21,9 @@ const Mutation = new GraphQLObjectType({
         login: mutation.login,
         newPost: mutation.createPost,
         updatePost: mutation.updatePost,
-        deletePost: mutation.deletePost
-        
+        deletePost: mutation.deletePost,
+        addComment: mutation.createComment,
+
     }
 
 });

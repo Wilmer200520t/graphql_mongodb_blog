@@ -26,7 +26,7 @@ const postType = new GraphQLObjectType({
     }
 })
 
-export default{
+export default {
     userType,
     postType
 };

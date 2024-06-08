@@ -26,7 +26,7 @@ const createUser = {
     },
     resolve: async (_, args) =>{
         const { username, password, email, displayName } = args;
-        const user = await models.userSchema.create({username, password, email, displayName});
+        const user = await models.user.create({username, password, email, displayName});
         await user.save();
 
         let userNonPassword = {...user._doc};
@@ -52,8 +52,7 @@ const login = {
         }
     },
     resolve : async (_, args) => {
-
-        const user = await models.userSchema.findOne({email: args.email});
+        const user = await models.user.findOne({email: args.email});
         
         /**
          * Validation user and password
@@ -75,13 +74,12 @@ const createPost = {
         title: { type: GraphQLString},
         body: { type: GraphQLString},
     }, 
-    resolve: async (_, args) => {
+    resolve: async (_, args, {verifiedUser}) => {
         const { title, body } = args;
-        
         const newPost = new models.post({
             title, 
             body,
-            authorID: "66629293c32ef576b04c5151"
+            authorID: verifiedUser._id
         });
 
         return newPost;

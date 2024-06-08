@@ -2,9 +2,13 @@ import express from 'express';
 import { graphqlHTTP } from 'express-graphql';
 import schema from './graphql/schema.js';
 import connectMongoDB from './db/index.js';
+import { authentificate }  from './middlewares/auth.js'; './middlewares/auth.js';
 
 const app = express();
 connectMongoDB();
+
+app.use(authentificate);
+
 app.use('/graphql', graphqlHTTP({
     schema,
     graphiql: true

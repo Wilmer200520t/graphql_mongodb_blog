@@ -82,6 +82,8 @@ const createPost = {
             authorID: verifiedUser._id
         });
 
+        await newPost.save();
+
         return newPost;
     }
 }

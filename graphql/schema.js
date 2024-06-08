@@ -7,7 +7,9 @@ const QueryType = new GraphQLObjectType({
     description: 'Root query object',
     fields: {
         getUsers: querys.findUsers,
-        getUserById: querys.findUserById
+        getUserById: querys.findUserById,
+        getPosts: querys.findPosts,
+        getPostById: querys.findPostById
     }
 });
 

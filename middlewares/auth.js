@@ -6,9 +6,9 @@ export const authentificate = (req, res, next) =>{
       const verify = jwt.verify(token, "secretkey");
       req.verifiedUser = verify.user;
     } catch (e) {
-      throw new Error("Invalid token");
+      return "Invalid token";
     }finally{
-        next();
+      next();
     }
     
 }

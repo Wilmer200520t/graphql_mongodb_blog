@@ -1,5 +1,7 @@
 import user from "./user.js";
+import post from "./post.js";
 
 export default {
-    userSchema : user.User
+    user : user.userSchema,
+    post : post.postSchema
 }

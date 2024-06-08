@@ -6,7 +6,8 @@ const QueryType = new GraphQLObjectType({
     name: 'Query',
     description: 'Root query object',
     fields: {
-        hello: querys.hello
+        getUsers: querys.findUsers,
+        getUserById: querys.findUserById
     }
 });
 
@@ -14,7 +15,9 @@ const Mutation = new GraphQLObjectType({
     name: 'Mutation',
     description: 'Root mutation object',
     fields: {
-        newUser: mutation.createUser
+        newUser: mutation.createUser,
+        login: mutation.login,
+        newPost: mutation.createPost
     }
 
 });

@@ -88,8 +88,59 @@ const createPost = {
     }
 }
 
+const updatePost = {
+    type: typeDef.postType,
+    description: 'This update a post',
+    args: {
+        id: { type: GraphQLString},
+        title: { type: GraphQLString},
+        body: { type: GraphQLString},
+    },
+    resolve: async (_, { id, title, body }, {verifiedUser}) =>{
+        if(!verifiedUser) throw new Error('User not authenticated');
+        
+        const updatedPost = await models.post.findOneAndUpdate(
+            {
+                _id: id, 
+                authorID: verifiedUser._id
+            },
+            {
+                title, body
+            },
+            {new: true} //Return the post updated
+        );
+
+        return updatedPost;
+    }
+}
+
+const deletePost = {
+    type: GraphQLString,
+    description: 'This delete a post',
+    args: {
+        id: { type: GraphQLString}
+    },
+    resolve: async (_, {id}, {verifiedUser}) => {
+        if(!verifiedUser) throw new Error('User not authenticated');
+        
+        const postDeleted = await models.post.findOneAndDelete(
+            {
+                _id: id, 
+                authorID: verifiedUser._id
+            }
+        );
+
+        if(!postDeleted) throw new Error('Post not found');
+
+        return 'Post deleted';
+    }
+
+}
+
 export default {
     createUser,
     login,
-    createPost
+    createPost,
+    updatePost,
+    deletePost
 }

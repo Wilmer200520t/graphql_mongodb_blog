@@ -19,7 +19,10 @@ const Mutation = new GraphQLObjectType({
     fields: {
         newUser: mutation.createUser,
         login: mutation.login,
-        newPost: mutation.createPost
+        newPost: mutation.createPost,
+        updatePost: mutation.updatePost,
+        deletePost: mutation.deletePost
+        
     }
 
 });

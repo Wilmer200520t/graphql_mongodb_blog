@@ -3,8 +3,11 @@ import { graphqlHTTP } from 'express-graphql';
 import schema from './graphql/schema.js';
 import connectMongoDB from './db/index.js';
 import { authentificate }  from './middlewares/auth.js'; './middlewares/auth.js';
+import dotenv from 'dotenv';
+dotenv.config();
 
-const app = express();
+const PORT = process.env.PORT;
+const app  = express();
 connectMongoDB();
 
 app.use(authentificate);
@@ -14,6 +17,6 @@ app.use('/graphql', graphqlHTTP({
     graphiql: true
 }));
 
-app.listen(4000, () => {
-    console.log('Server is running on port http://localhost:4000');
+app.listen(PORT, () => {
+    console.log(`Server is running on port http://localhost:${PORT}`);
 });
